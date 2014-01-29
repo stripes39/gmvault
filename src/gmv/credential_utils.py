@@ -299,7 +299,10 @@ class CredentialHelper(object):
             
             LOG.critical("Authentication performed with Gmail password.\n")
             
-            passwd = cls.read_password(args['email'])
+            passwd = os.getenv('PASSWORD')
+            if not passwd:
+                LOG.critical("Could not locate a password in the env PASSWORD")
+                passwd = cls.read_password(args['email'])
             
             #password to be renewed so need an interactive phase to get the new pass
             if not passwd or args['passwd'] in ['renew', 'store']: # go to interactive mode
